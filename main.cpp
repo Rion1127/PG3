@@ -20,8 +20,8 @@ float f = 300;
 double g = 500;
 double h = 600;
 
-char c = 30;
-char d = 20;
+char c = 'a';
+char d = 'b';
 
 int main() {
 	printf("%d\n", Min<int>(a, b));		//intŒ^
