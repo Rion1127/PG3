@@ -11,9 +11,16 @@ char Min(char a, char b) {
 	return printf("”šˆÈŠO‚Í‘ã“ü‚Å‚«‚Ü‚¹‚ñ\n");
 }
 
-int main() {
-	int hour = 10;
+int Wage(int wage, int hour) {
+	int i = 0;
+	if(hour)
 
+	return (Wage(wage))
+}
+
+int main() {
+	int wage = 1072;
+	int hour = 10;
 
 
 
