@@ -7,8 +7,10 @@ T Min(T a, T b) {
 	return 0;
 }
 template <>
+
 char Min(char a, char b) {
-	return printf("”šˆÈŠO‚Í‘ã“ü‚Å‚«‚Ü‚¹‚ñ\n");
+	printf("”šˆÈŠO‚Í‘ã“ü‚Å‚«‚Ü‚¹‚ñ\n");
+	return 0;
 }
 
 int a = 100;
