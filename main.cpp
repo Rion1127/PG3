@@ -4,10 +4,10 @@
 // 再帰的な賃金
 int RecursiveWage(int value,int hour) {
 	if (hour <= 0) {
-		return value;
+		return 0;
 	}
-	
-	return (RecursiveWage(value * 2 - 50,hour - 1));
+
+	return value + (RecursiveWage(value * 2 - 50,hour - 1));
 }
 //一般的な賃金
 int GeneralWage(int value, int hour) {
@@ -16,7 +16,7 @@ int GeneralWage(int value, int hour) {
 
 int main() {
 	int wage = 1072;	//一般的な時給
-	int hour = 10;		//時間
+	int hour = 2;		//時間
 	int result;			//結果を代入
 
 	//一般的な賃金を代入
