@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <Windows.h>
 #include <random>
-
+#include <functional>
 
 typedef void (*PFunc)(int*);
 
@@ -15,19 +15,25 @@ void setTimeout(PFunc p, int second) {
 	Sleep(1000 * second);
 }
 
-int main() {
-	srand(time(nullptr));
+int main(int argc,const char*argv[]) {
+	
 
+	srand(time(nullptr));
 	int number = 0;
 	int randNum = 0;
-
 	printf("”š‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢\n");
 	scanf_s("%d", &number);	//“ü—Í
-
 	//3•b‘Ò‚Â
-	PFunc p;
-	p = callback1;
-	setTimeout(p, 3);	
+	std::function<int(int)> setTimeout = [](int i) {
+		printf("%d•bŒã‚ÉÀs‚³‚ê‚é‚æ\n", i);
+		Sleep(1000 * i);
+		return 0;
+	};
+	auto fx2 = [](int i) {
+		printf("%d•bŒã‚ÉÀs‚³‚ê‚é‚æ\n", i);
+		Sleep(1000 * i);
+		return 0;
+	};
 
 	while (true) {
 		//‹ô”‚Ì—”‚ğ•Ô‚·
@@ -41,8 +47,8 @@ int main() {
 			if (randNum % 2 == 1) break;	//Šï”‚È‚çƒ‹[ƒv‚ğ”²‚¯‚é
 		}
 	}
-
 	printf("%d\n", randNum);
+
 
 	return 0;
 }
