@@ -16,8 +16,6 @@ void callback1(int number) {
 	else {
 		printf("ƒvƒŒƒCƒ„[•‰‚¯");
 	}
-
-
 }
 
 void setTimeout(PFunc p, int second,int number) {
