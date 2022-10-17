@@ -21,7 +21,7 @@ int main() {
 	int number = 0;
 	int randNum = 0;
 
-	printf("”š‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢ \n0 : ‹ô” \n1 : Šï”\n");
+	printf("”š‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢\n");
 	scanf_s("%d", &number);	//“ü—Í
 
 	//3•b‘Ò‚Â
