@@ -42,7 +42,7 @@ int main() {
 			break;
 		}
 	}
-	//3•b‘Ò‚Â
+	//3•b‘Ò‚Â‚ 
 	PFunc p;
 	p = callback1;
 	setTimeout(p, 3,number);
