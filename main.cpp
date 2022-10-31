@@ -5,7 +5,7 @@
 
 typedef void (*PFunc)(int);
 
-void callback1(int number) {
+void Result(int number) {
 	int randNum = 0;
 
 	randNum = rand() % 6 + 1;
@@ -42,9 +42,9 @@ int main() {
 			break;
 		}
 	}
-	//3•b‘Ò‚Â‚ 
+	//3•b‘Ò‚Â
 	PFunc p;
-	p = callback1;
+	p = Result;
 	setTimeout(p, 3,number);
 
 	return 0;
