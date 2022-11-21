@@ -1,58 +1,142 @@
-ï»¿#include <stdio.h>
-#include <list>
-#include <iostream>
+#include "DxLib.h"
+#include "SceneManager.h"
 
-int main() {
+// ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚É•\¦‚·‚é•¶š—ñ
+const char TITLE[] = "LE2A_ƒXƒYƒL_ƒŠƒIƒ“";
 
-	std::list<const char*> list
-	{
-		"Tokyo",
-		"Kanda",
-		"Akihabara",
-		"Okachimachi",
-		"Ueno",
-		"Uguisudani",
-		"Nippori",
-		"Tabata",
-		"Komagome",
-		"Sugamo",
-		"Otsuka",
-		"Ikebukuro",
-		"Mejiro",
-		"Takadanobaa",
-		"Shin - Okuo",
-		"Shinjuku",
-		"Yoyogi",
-		"Harajuku",
-		"Shibuya",
-		"Ebisu",
-		"Meguro",
-		"Gotanda",
-		"Osaki",
-		"Shinagawa",
-		"Tamachi",
-		"Hamamatsuco",
-		"Shimbashi",
-		"Yurakucho",
-	};
+// ƒEƒBƒ“ƒhƒE‰¡•
+const int WIN_WIDTH = 600;
 
-	std::cout << "1970å¹´" << "\n";
-	for (auto itr = list.begin(); itr != list.end(); itr++) {
-		std::cout << *itr << "\n";
+// ƒEƒBƒ“ƒhƒEc•
+const int WIN_HEIGHT = 400;
+
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
+                   _In_ int nCmdShow) {
+	// ƒEƒBƒ“ƒhƒEƒ‚[ƒh‚Éİ’è
+	ChangeWindowMode(TRUE);
+
+	// ƒEƒBƒ“ƒhƒEƒTƒCƒY‚ğè“®‚Å‚Í•ÏX‚³‚¹‚¸A
+	// ‚©‚ÂƒEƒBƒ“ƒhƒEƒTƒCƒY‚É‡‚í‚¹‚ÄŠg‘å‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚é
+	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
+
+	// ƒ^ƒCƒgƒ‹‚ğ•ÏX
+	SetMainWindowText(TITLE);
+
+	// ‰æ–ÊƒTƒCƒY‚ÌÅ‘åƒTƒCƒYAƒJƒ‰[ƒrƒbƒg”‚ğİ’è(ƒ‚ƒjƒ^[‚Ì‰ğ‘œ“x‚É‡‚í‚¹‚é)
+	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
+
+	// ‰æ–ÊƒTƒCƒY‚ğİ’è(‰ğ‘œ“x‚Æ‚Ì”ä—¦‚Åİ’è)
+	SetWindowSizeExtendRate(1.0);
+
+	// ‰æ–Ê‚Ì”wŒiF‚ğİ’è‚·‚é
+	SetBackgroundColor(0x00, 0x00, 0x00);
+
+	// DXlib‚Ì‰Šú‰»
+	if (DxLib_Init() == -1) { return -1; }
+
+	// (ƒ_ƒuƒ‹ƒoƒbƒtƒ@)•`‰ææƒOƒ‰ƒtƒBƒbƒN—Ìˆæ‚Í— –Ê‚ğw’è
+	SetDrawScreen(DX_SCREEN_BACK);
+
+	// ‰æ‘œ‚È‚Ç‚ÌƒŠƒ\[ƒXƒf[ƒ^‚Ì•Ï”éŒ¾‚Æ“Ç‚İ‚İ
+
+
+	// ƒQ[ƒ€ƒ‹[ƒv‚Åg‚¤•Ï”‚ÌéŒ¾
+	SceneManager* sceneManager = SceneManager::GetInstance();
+
+	int color_ = 0xffffff;
+
+	const char* nowSceneName = "a";
+	const char* NextSceneName = "a";
+
+	// ÅV‚ÌƒL[ƒ{[ƒhî•ñ—p
+	char keys[256] = {0};
+
+	// 1ƒ‹[ƒv(ƒtƒŒ[ƒ€)‘O‚ÌƒL[ƒ{[ƒhî•ñ
+	char oldkeys[256] = {0};
+
+	// ƒQ[ƒ€ƒ‹[ƒv
+	while (true) {
+		for (int i = 0; i < 256; i++) {
+			oldkeys[i] = keys[i];
+		}
+		// ÅV‚ÌƒL[ƒ{[ƒhî•ñ‚¾‚Á‚½‚à‚Ì‚Í1ƒtƒŒ[ƒ€‘O‚ÌƒL[ƒ{[ƒhî•ñ‚Æ‚µ‚Ä•Û‘¶
+		// ÅV‚ÌƒL[ƒ{[ƒhî•ñ‚ğæ“¾
+		GetHitKeyStateAll(keys);
+
+		// ‰æ–ÊƒNƒŠƒA
+		ClearDrawScreen();
+		//---------  ‚±‚±‚©‚çƒvƒƒOƒ‰ƒ€‚ğ‹Lq  ----------//
+
+		int nextScene = sceneManager->GetSceneNum() + 1;
+		// XVˆ—
+
+		//ƒV[ƒ“ƒ`ƒFƒ“ƒW
+		if (keys[KEY_INPUT_SPACE] == 1 &&
+			oldkeys[KEY_INPUT_SPACE] == 0   ) {
+			//Ÿ‚ÌƒV[ƒ“‚ğ‘ã“ü
+			sceneManager->ChangeScene(nextScene);
+		}
+
+		//”wŒiF•ÏX
+		if (sceneManager->GetSceneNum() == SceneNum::Title_) {
+			color_ = 0xAA5050;
+			nowSceneName = "TitleScene";
+			NextSceneName = "NewGameScene";
+		}
+		else if (sceneManager->GetSceneNum() == SceneNum::NewGame_) {
+			color_ = 0x50AA50;
+			nowSceneName = "NewGameScene";
+			NextSceneName = "GamePlayScene";
+		}
+		else if (sceneManager->GetSceneNum() == SceneNum::GamePlay_) {
+			color_ = 0x5050AA;
+			nowSceneName = "GamePlayScene";
+			NextSceneName = "GameClearScene";
+		}
+		else if (sceneManager->GetSceneNum() == SceneNum::GameClear_) {
+			color_ = 0xAA50AA;
+			nowSceneName = "GameClearScene";
+			NextSceneName = "TitleScene";
+		}
+
+		// •`‰æˆ—
+		//”wŒi
+		DrawBox(0, 0, WIN_WIDTH, WIN_HEIGHT, color_, true);
+
+		DrawFormatString(100, 100, 0xffffff,
+			"SceneNum : %d",
+			sceneManager->GetSceneNum());
+		DrawFormatString(100, 120, 0xffffff,
+			"Press SPACE");
+
+		//Œ»İ‚ÆŸ‚ÌƒV[ƒ“‚ğ•\¦
+		DrawFormatString(0, 0, 0xffffff,
+			"NowScene  : ");
+		DrawFormatString(0, 20, 0xffffff,
+			"NextScene : ");
+		DrawString(100, 0, nowSceneName, 0xffffff);
+		DrawString(100, 20, NextSceneName, 0xffffff);
+
+		//---------  ‚±‚±‚Ü‚Å‚ÉƒvƒƒOƒ‰ƒ€‚ğ‹Lq  ---------//
+		// (ƒ_ƒuƒ‹ƒoƒbƒtƒ@)— –Ê
+		ScreenFlip();
+
+		// 20ƒ~ƒŠ•b‘Ò‹@(‹^—60FPS)
+		WaitTimer(20);
+
+		// WindowsƒVƒXƒeƒ€‚©‚ç‚­‚éî•ñ‚ğˆ—‚·‚é
+		if (ProcessMessage() == -1) {
+			break;
+		}
+
+		// ESCƒL[‚ª‰Ÿ‚³‚ê‚½‚çƒ‹[ƒv‚©‚ç”²‚¯‚é
+		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) {
+			break;
+		}
 	}
-	//è¥¿æ—¥æš®é‡Œã‚’æŒ¿å…¥ã™ã‚‹
-	list.insert(std::next(list.begin(), 7), "Nishi - Nippori");
+	// Dxƒ‰ƒCƒuƒ‰ƒŠI—¹ˆ—
+	DxLib_End();
 
-	std::cout << "\n2019å¹´" << "\n";
-	for (auto itr = list.begin(); itr != list.end(); itr++) {
-		std::cout << *itr << "\n";
-	}
-	//é«˜è¼ªã‚²ãƒ¼ãƒˆã‚¦ã‚§ã‚¤ã‚’æŒ¿å…¥ã™ã‚‹
-	list.insert(std::next(list.begin(),25), "Takanawa - Gatway");
-	std::cout << "\n2022å¹´" << "\n";
-
-	for (auto itr = list.begin(); itr != list.end(); itr++) {
-		std::cout << *itr << "\n";
-	}
+	// ³íI—¹
 	return 0;
 }
