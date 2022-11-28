@@ -36,6 +36,17 @@ int main() {
 			printf("\n---------------------\n");
 			printf("操作を選択してください\n");
 			scanf_s("%d", &selectMenu);
+
+			//0か1以外を入力されたらもう一度入力させる
+			if (selectMenu < menu::DISPLAY_ && 
+				selectMenu > menu::DELETE_)
+			{
+				break;
+			}
+			else {
+				printf("エラー\n表示されている番号を選択してください\n");
+				selectMenu = menu::MENU;
+			}
 		}
 		else if (selectMenu == menu::DISPLAY_) {
 			//リスト一覧の表示
