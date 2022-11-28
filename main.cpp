@@ -29,7 +29,7 @@ int main() {
 	while (true) {
 
 		if (selectMenu == menu::MENU) {
-			printf("[要素の操作]\n");
+			printf("\n[要素の操作]\n");
 			printf("1.要素の一覧表示\n");
 			printf("2.最後尾に要素の挿入\n");
 			printf("3.最後尾の要素の削除\n");
@@ -42,19 +42,12 @@ int main() {
 			Index(&head);
 
 			printf("\n---------------------\n");
-			while (true) {
-				printf("0.初期画面に戻る\n");
-				scanf_s("%d", &selectMenu);
-				if (selectMenu == 0) {
-					break;
-				}
-				
-				if(selectMenu != 0) {
-					printf("その番号は使用できません\n");
-					scanf_s("%d", &selectMenu);
-				}
-			}
+
+			printf("0.初期画面に戻る\n");
+			scanf_s("%d", &selectMenu);
+
 		}
+
 		else if (selectMenu == menu::INSERT_) {
 			printf("\n[リスト要素の挿入]\n");
 			printf("\n追加する文字を入力してください\n");
@@ -67,7 +60,7 @@ int main() {
 			printf("0.初期画面に戻る\n");
 			scanf_s("%d", &selectMenu);
 		}
-		
+
 	}
 
 
@@ -79,12 +72,12 @@ void Create(CELL* currentCELL, const char* buf)
 	//新規セルを作成
 	CELL* newCell;
 	newCell = (CELL*)malloc(sizeof(CELL));
-	
+
 	strcpy_s(newCell->str, 8, buf);
 	newCell->next = nullptr;
 	//指定したセルに次のセルがある場合
 	//次のセルの前のポインタに新規セルのアドレスを代入
-	while(currentCELL->next != nullptr){
+	while (currentCELL->next != nullptr) {
 		//次のセルのアドレスを代入
 		currentCELL = currentCELL->next;
 	}
@@ -94,9 +87,15 @@ void Create(CELL* currentCELL, const char* buf)
 
 void Index(CELL* endCell)
 {
+	int no = 0;
+	printf("\n[要素の一覧表示]\n");
 	//nextにアドレスがある限りループ
+	printf("要素一覧:{\n");
 	while (endCell->next != nullptr) {
 		endCell = endCell->next;
-		printf("%s\n", endCell->str);
+		printf("%d: %s,\n", no,endCell->str);
+		no++;
 	}
+	printf("}\n");
+	printf("\n要素数: %d\n",no);
 }
