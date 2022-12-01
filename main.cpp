@@ -10,7 +10,7 @@ typedef struct cell
 }CELL;
 
 enum menu {
-	NONE,
+	MENU,
 	DISPLAY_,
 	INSERT_,
 	EDIT_,
@@ -35,7 +35,8 @@ int main() {
 	int inputValue;
 	CELL* insertCell;
 
-	int menuNum;
+	int menuNum = menu::MENU;
+	int selectNum = 0;
 
 
 	CELL head;
@@ -43,53 +44,154 @@ int main() {
 
 	while (true) {
 
-		printf("[要素の操作]\n");
-		printf("1.要素の表示\n");
-		printf("2.要素の挿入\n");
-		printf("3.要素の編集\n");
-		printf("4.要素の削除\n");
+		if (menuNum == menu::MENU) {
+			selectNum = 0;
+			printf("\n[要素の操作]\n");
+			printf("1.要素の表示\n");
+			printf("2.要素の挿入\n");
+			printf("3.要素の編集\n");
+			printf("4.要素の削除\n");
 
-		printf("5.要素の並び替え(オプション)\n");
-		printf("\n---------------------------\n");
-		printf("操作を選択してください\n");
-		scanf_s("%d", &menuNum);
-
+			printf("5.要素の並び替え(オプション)\n");
+			printf("\n---------------------------\n");
+			printf("操作を選択してください\n");
+			scanf_s("%d", &menuNum);
+		}
 		//表示
-		if (menuNum == menu::DISPLAY_) {
-			DisplayUpdate(&head);
+		else if (menuNum == menu::DISPLAY_) {
+			//要素の表示
+			if (selectNum == 0) {
+				printf("\n[要素の表示]\n");
+				printf("1.要素の一覧表示\n");
+				printf("2.順番を指定して要素を表示\n");
+				printf("3.要素操作に戻る\n");
+
+				scanf_s("%d", &selectNum);
+
+				if (selectNum == 3) {
+					menuNum = menu::MENU;
+				}
+			}
+			//要素の一覧表示
+			else if (selectNum == 1) {
+
+				DisplayUpdate(&head);
+
+				printf("\n---------------------------\n");
+				printf("1.要素の表示に戻る\n");
+				printf("2.要素の操作に戻る\n");
+
+				scanf_s("%d", &selectNum);
+				//要素の表示に戻る
+				if (selectNum == 1) {
+					selectNum = 0;
+				}
+				//要素の操作に戻る
+				else if (selectNum == 2) {
+					menuNum = menu::MENU;
+				}
+			}
+			//順番を指定して要素を表示
+			else if (selectNum == 2) {
+
+
+				printf("\n---------------------------\n");
+				printf("1.要素の表示に戻る\n");
+				printf("2.要素の操作に戻る\n");
+
+				scanf_s("%d", &selectNum);
+
+				//要素の表示に戻る
+				if (selectNum == 1) {
+					selectNum = 0;
+				}
+				//要素の操作に戻る
+				else if (selectNum == 2) {
+					menuNum = menu::MENU;
+				}
+			}
+
+
 		}
 		//挿入
 		else if (menuNum == menu::INSERT_) {
+			printf("何番目のセルの後ろに挿入しますか？\n");
+			scanf_s("%d", &iterator);
 
+			printf("挿入する値を入力してください\n");
+			scanf_s("%d", &inputValue);
+
+			//任意のセルの後ろに追加
+			insertCell = GetInsertListAddress(&head, iterator);
+			Create(insertCell, inputValue);
+
+			menuNum = menu::MENU;
 		}
 		//編集
 		else if (menuNum == menu::EDIT_) {
+			printf("\n[要素の編集]\n");
+
+			printf("編集したい要素の番号を指定してください\n");
+			scanf_s("%d", &iterator);
+
+			insertCell = GetInsertListAddress(&head, iterator);
+			//x番目がある場合
+			if (insertCell->next != nullptr) {
+				printf("x番目の要素の変更する値を入力してください\n");
+				scanf_s("%d", &inputValue);
+
+				insertCell->next->val = inputValue;
+				printf("%d番目の要素の値が`%d`に変更されました\n", iterator, inputValue);
+			}
+			//x番目がない場合
+			else {
+				printf("x番目の要素が見つかりませんでした\n");
+			}
+
+			menuNum = menu::MENU;
 
 		}
 		//削除
 		else if (menuNum == menu::DELETE_) {
+			printf("\n[要素の削除]\n");
 
+			printf("削除したい要素の番号を指定してください\n");
+			scanf_s("%d", &iterator);
+
+			insertCell = GetInsertListAddress(&head, iterator);
+			//x番目がある場合
+			if (insertCell->next != nullptr) {
+
+				CELL* p = &head;
+
+				for (int i = 0; i < iterator + 1; i++) {
+					p = p->next;
+				}
+
+				p->prev->next = p->next;
+				//p->nextがある場合
+				if (p->next != nullptr) {
+					p->next->prev = p->prev;
+				}
+				p->next = nullptr;
+				p->prev = nullptr;
+
+
+				printf("%d番目の要素`%d`を削除しました\n", iterator, inputValue);
+			}
+			//x番目がない場合
+			else {
+				printf("x番目の要素が見つかりませんでした\n");
+			}
+
+			menuNum = menu::MENU;
 		}
 		//並べ替え
 		else if (menuNum == menu::SORTING_) {
 
 		}
-
-
-
-
-		printf("何番目のセルの後ろに挿入しますか？\n");
-		scanf_s("%d", &iterator);
-
-		printf("挿入する値を入力してください\n");
-		scanf_s("%d", &inputValue);
-
-		//任意のセルの後ろに追加
-		insertCell = GetInsertListAddress(&head, iterator);
-		Create(insertCell, inputValue);
-
-		//リスト一覧の表示
-		Index(&head);
+		////リスト一覧の表示
+		//Index(&head);
 	}
 
 
@@ -150,26 +252,19 @@ CELL* GetInsertListAddress(CELL* endCELL, int iterator)
 
 void DisplayUpdate(CELL* endCell)
 {
-	int allNum = 0;
-	while (endCell->next != nullptr) {
-		allNum++;
-	}
-	printf("[要素の一覧表示]\n");
-	printf("要素数: %d\n", allNum);
+	printf("\n[要素の一覧表示]\n");
 	printf("要素一覧: {\n");
 
 	int no = 0;
 	//nextにアドレスがある限りループ
-	while (endCell != nullptr) {
+	while (endCell->next != nullptr) {
+
 		endCell = endCell->next;
 		printf("%d: ", no);
-		printf("%d,", endCell->val);		//5桁まで右揃え
+		printf("%d,\n", endCell->val);		//5桁まで右揃え
 		no++;
+
 	}
 	printf("}\n");
-
-	printf("\n---------------------------\n");
-	printf("1.要素の表示に戻る\n");
-	printf("2.要素の操作に戻る\n");
-	//scanf_s("%d", &menuNum);
+	printf("\n要素数: %d\n", no);
 }
