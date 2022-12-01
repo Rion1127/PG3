@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 //双方向リストの構造体の定義
 typedef struct cell
 {
-	int val;
+	const char* val[8];
 	struct cell* prev;
 	struct cell* next;
 }CELL;
@@ -18,7 +19,7 @@ enum menu {
 	SORTING_
 };
 
-void Create(CELL* currentCELL, int val);
+void Create(CELL* currentCELL, const char* val);
 void Index(CELL* endCell);
 /// <summary>
 /// 任意の位置まで、アドレスをたどる
@@ -32,7 +33,7 @@ void DisplayUpdate(CELL* endCELL);
 
 int main() {
 	int iterator;
-	int inputValue;
+	char* inputValue[8];
 	CELL* insertCell;
 
 	int menuNum = menu::MENU;
@@ -49,10 +50,12 @@ int main() {
 			printf("\n[要素の操作]\n");
 			printf("1.要素の表示\n");
 			printf("2.要素の挿入\n");
-			printf("3.要素の編集\n");
-			printf("4.要素の削除\n");
+			if (head.next != nullptr) {
+				printf("3.要素の編集\n");
+				printf("4.要素の削除\n");
+			}
 
-			printf("5.要素の並び替え(オプション)\n");
+			//printf("5.要素の並び替え(オプション)\n");
 			printf("\n---------------------------\n");
 			printf("操作を選択してください\n");
 			scanf_s("%d", &menuNum);
@@ -64,11 +67,11 @@ int main() {
 				printf("\n[要素の表示]\n");
 				printf("1.要素の一覧表示\n");
 				printf("2.順番を指定して要素を表示\n");
-				printf("3.要素操作に戻る\n");
+				printf("9.要素操作に戻る\n");
 
 				scanf_s("%d", &selectNum);
 
-				if (selectNum == 3) {
+				if (selectNum == 9) {
 					menuNum = menu::MENU;
 				}
 			}
@@ -119,11 +122,11 @@ int main() {
 			scanf_s("%d", &iterator);
 
 			printf("挿入する値を入力してください\n");
-			scanf_s("%d", &inputValue);
+			scanf_s("%s", &inputValue,8);
 
 			//任意のセルの後ろに追加
 			insertCell = GetInsertListAddress(&head, iterator);
-			Create(insertCell, inputValue);
+			Create(insertCell, *inputValue);
 
 			menuNum = menu::MENU;
 		}
@@ -138,10 +141,11 @@ int main() {
 			//x番目がある場合
 			if (insertCell->next != nullptr) {
 				printf("x番目の要素の変更する値を入力してください\n");
-				scanf_s("%d", &inputValue);
+				scanf_s("%s", &inputValue);
 
 				insertCell->next->val = inputValue;
-				printf("%d番目の要素の値が`%d`に変更されました\n", iterator, inputValue);
+				strcpy_s(insertCell->next->val, inputValue,8);
+				printf("%d番目の要素の値が`%s`に変更されました\n", iterator, inputValue);
 			}
 			//x番目がない場合
 			else {
@@ -177,7 +181,7 @@ int main() {
 				p->prev = nullptr;
 
 
-				printf("%d番目の要素`%d`を削除しました\n", iterator, inputValue);
+				printf("%d番目の要素`%s`を削除しました\n", iterator, inputValue);
 			}
 			//x番目がない場合
 			else {
@@ -198,7 +202,7 @@ int main() {
 	return 0;
 }
 
-void Create(CELL* currentCELL, int val)
+void Create(CELL* currentCELL, const char* val)
 {
 	//新規セルを作成
 	CELL* newCell;
@@ -226,7 +230,7 @@ void Index(CELL* endCell)
 		endCell = endCell->next;
 		printf("No : %d ", no);
 		printf("prevAd : %p ", endCell->prev);
-		printf("val : %d ", endCell->val);		//5桁まで右揃え
+		printf("val : %s ", endCell->val);		//5桁まで右揃え
 		printf("NowAd : (%p) ", endCell);
 		printf("nextAd : %p\n", endCell->next);
 		no++;
@@ -261,7 +265,7 @@ void DisplayUpdate(CELL* endCell)
 
 		endCell = endCell->next;
 		printf("%d: ", no);
-		printf("%d,\n", endCell->val);		//5桁まで右揃え
+		printf("%s,\n", endCell->val);		//5桁まで右揃え
 		no++;
 
 	}
