@@ -28,10 +28,11 @@ void Index(CELL* endCell);
 /// <param name="iterator">要素数</param>
 /// <returns></returns>
 CELL* GetInsertListAddress(CELL* endCELL, int iterator);
+int GetCellAllNum(CELL cell);
 //メニュー更新
 void MenuUpdate(const CELL cell, int& menuNum);
 //一覧表示更新
-void DisplayUpdate(CELL cell,int& menuNum,int& selectNum);
+void DisplayUpdate(CELL cell, int& menuNum, int& selectNum);
 void ShowCell(CELL* endCELL);
 //挿入更新
 void InsertUpdate(CELL& cell, int& menuNum);
@@ -54,7 +55,7 @@ int main() {
 		}
 		//表示
 		else if (menuNum == menu::DISPLAY_) {
-			DisplayUpdate(head,menuNum,selectNum);
+			DisplayUpdate(head, menuNum, selectNum);
 		}
 		//挿入
 		else if (menuNum == menu::INSERT_) {
@@ -114,6 +115,7 @@ void Index(CELL* endCell)
 // 任意の位置まで、アドレスをたどる
 CELL* GetInsertListAddress(CELL* endCELL, int iterator)
 {
+
 	//指定した数forループする
 	for (int i = 0; i < iterator; i++) {
 		if (endCELL->next) {
@@ -127,6 +129,18 @@ CELL* GetInsertListAddress(CELL* endCELL, int iterator)
 	}
 
 	return endCELL;
+}
+int GetCellAllNum(CELL cell)
+{
+	int allNum = 0;
+	CELL* insertCell = &cell;
+	while (insertCell->next != nullptr)
+	{
+		insertCell = insertCell->next;
+		allNum++;
+	}
+
+	return allNum;
 }
 //メニュー更新
 void MenuUpdate(CELL cell, int& menuNum)
@@ -196,8 +210,18 @@ void DisplayUpdate(CELL cell, int& menuNum, int& selectNum)
 		printf("2.順番を指定して要素を表示\n");
 		printf("9.要素操作に戻る\n");
 
-		scanf_s("%d", &selectNum);
-		scanf_s("%*[^\n]%*c");
+		while (true) {
+			selectNum = 0;
+			scanf_s("%d", &selectNum);
+			scanf_s("%*[^\n]%*c");
+
+			if (selectNum != 1 && selectNum != 2 && selectNum != 9) {
+				printf("数字を入力してね\n");
+			}
+			else {
+				break;
+			}
+		}
 
 		if (selectNum == 9) {
 			menuNum = menu::MENU;
@@ -213,8 +237,18 @@ void DisplayUpdate(CELL cell, int& menuNum, int& selectNum)
 		printf("1.要素の表示に戻る\n");
 		printf("2.要素の操作に戻る\n");
 
-		scanf_s("%d", &selectNum);
-		scanf_s("%*[^\n]%*c");
+		while (true) {
+			selectNum = 0;
+			scanf_s("%d", &selectNum);
+			scanf_s("%*[^\n]%*c");
+
+			if (selectNum != 1 && selectNum != 2) {
+				printf("数字を入力してね\n");
+			}
+			else {
+				break;
+			}
+		}
 		//要素の表示に戻る
 		if (selectNum == 1) {
 			selectNum = 0;
@@ -231,7 +265,9 @@ void DisplayUpdate(CELL cell, int& menuNum, int& selectNum)
 
 		printf("\n[表示したい要素を指定]\n");
 		printf("表示したい要素を指定してください\n");
+
 		scanf_s("%d", &displauNum);
+
 		CELL* displayCell = GetInsertListAddress(&cell, displauNum + 1);
 		//表示
 		printf("%d : %s\n", displauNum, displayCell->val);
@@ -240,8 +276,18 @@ void DisplayUpdate(CELL cell, int& menuNum, int& selectNum)
 		printf("1.要素の表示に戻る\n");
 		printf("2.要素の操作に戻る\n");
 
-		scanf_s("%d", &selectNum);
-		scanf_s("%*[^\n]%*c");
+		while (true) {
+			selectNum = 0;
+			scanf_s("%d", &selectNum);
+			scanf_s("%*[^\n]%*c");
+
+			if (selectNum != 1 && selectNum != 2) {
+				printf("数字を入力してね\n");
+			}
+			else {
+				break;
+			}
+		}
 		//要素の表示に戻る
 		if (selectNum == 1) {
 			selectNum = 0;
@@ -256,47 +302,74 @@ void DisplayUpdate(CELL cell, int& menuNum, int& selectNum)
 //挿入更新
 void InsertUpdate(CELL& cell, int& menuNum)
 {
-	int iterator;
+	int iterator = -1;
 	const char inputValue[8]{};
+
+	int allNum = GetCellAllNum(cell);
 
 	CELL* insertCell;
 
 	printf("\n[リストの要素の挿入]\n");
-	printf("何番目のセルの後ろに挿入しますか？\n");
-	scanf_s("%d", &iterator);
-	scanf_s("%*[^\n]%*c");
+	printf("\n要素を追加する場所を指定してください\n");
+	printf("(指定数が要素数よりも多い場合、最後尾に追加されます)\n");
+	while (true) {
+		scanf_s("%d", &iterator);
+		scanf_s("%*[^\n]%*c");
 
-	printf("挿入する値を入力してください\n");
+		if (iterator < 0) {
+			printf("数字を入力してね\n");
+		}
+		else {
+			break;
+		}
+	}
+
+	printf("追加する値を入力してください\n");
 	scanf_s("%s", &inputValue, 8);
 
 	//任意のセルの後ろに追加
 	insertCell = GetInsertListAddress(&cell, iterator);
 	Create(insertCell, inputValue);
 
-	printf("\n`%s`が%d番目に挿入されました\n", inputValue, iterator);
+
+	int insertNum = 0;
+	//指定数が要素数より多いとき
+	if (allNum < iterator)insertNum = allNum;
+	//要素数が指定数より多いとき
+	else insertNum = iterator;
+
+	printf("\n要素`%s`が%d番目に挿入されました\n", inputValue, insertNum);
 
 	menuNum = menu::MENU;
 }
 //編集更新
 void EditUpdate(CELL cell, int& menuNum)
 {
-	int iterator = 0;
+	int iterator = -1;
 	const char inputValue[8]{};
 	CELL* insertCell;
 
 	printf("\n[要素の編集]\n");
 
 	printf("編集したい要素の番号を指定してください\n");
-	scanf_s("%d", &iterator);
-	scanf_s("%*[^\n]%*c");
+	while (true) {
+		scanf_s("%d", &iterator);
+		scanf_s("%*[^\n]%*c");
+
+		if (iterator < 0) {
+			printf("数字を入力してね\n");
+		}
+		else {
+			break;
+		}
+	}
 
 	insertCell = GetInsertListAddress(&cell, iterator);
 	//x番目がある場合
 	if (insertCell->next != nullptr) {
-		printf("x番目の要素の変更する値を入力してください\n");
+		printf("%d番目の要素の変更する値を入力してください\n", iterator);
 		scanf_s("%s", inputValue, 8);
 
-		//insertCell->next->val = inputValue;
 		strcpy_s(insertCell->next->val, 8, inputValue);
 		printf("%d番目の要素の値が`%s`に変更されました\n", iterator, inputValue);
 	}
@@ -311,13 +384,22 @@ void EditUpdate(CELL cell, int& menuNum)
 //削除更新
 void DeleteUpdate(CELL cell, int& menuNum)
 {
-	int iterator;
+	int iterator = -1;
 	CELL* insertCell;
 	printf("\n[要素の削除]\n");
 
 	printf("削除したい要素の番号を指定してください\n");
-	scanf_s("%d", &iterator);
-	scanf_s("%*[^\n]%*c");
+	while (true) {
+		scanf_s("%d", &iterator);
+		scanf_s("%*[^\n]%*c");
+
+		if (iterator < 0) {
+			printf("数字を入力してね\n");
+		}
+		else {
+			break;
+		}
+	}
 
 	insertCell = GetInsertListAddress(&cell, iterator);
 	//x番目がある場合
