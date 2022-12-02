@@ -20,7 +20,6 @@ enum menu {
 };
 
 void Create(CELL* currentCELL, const char* val);
-void Index(CELL* endCell);
 /// <summary>
 /// 任意の位置まで、アドレスをたどる
 /// </summary>
@@ -97,20 +96,6 @@ void Create(CELL* currentCELL, const char* val)
 	}
 	//指定したセルの「次のセルのポインタに新規セルのアドレスを代入」
 	currentCELL->next = newCell;
-}
-void Index(CELL* endCell)
-{
-	int no = 1;
-	//nextにアドレスがある限りループ
-	while (endCell->next != nullptr) {
-		endCell = endCell->next;
-		printf("No : %d ", no);
-		printf("prevAd : %p ", endCell->prev);
-		printf("val : %s ", endCell->val);		//5桁まで右揃え
-		printf("NowAd : (%p) ", endCell);
-		printf("nextAd : %p\n", endCell->next);
-		no++;
-	}
 }
 // 任意の位置まで、アドレスをたどる
 CELL* GetInsertListAddress(CELL* endCELL, int iterator)
