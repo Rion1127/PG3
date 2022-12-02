@@ -163,40 +163,30 @@ void MenuUpdate(CELL cell, int& menuNum)
 
 		//中身があるとき
 		if (cell.next != nullptr) {
-
-			if (menuNum < 1 || menuNum > 4) {
-				printf("そんな操作はないよ\n");
-			}
-			else {
-				break;
-			}
+			//メニュー
+			if (menuNum < 1 || menuNum > 4)printf("そんな操作はないよ\n");
+			else break;
 		}
 		//中身がないとき
 		else {
-			if (menuNum < 1 || menuNum > 2) {
-				printf("そんな操作はないよ\n");
-			}
-			else {
-				break;
-			}
+			if (menuNum < 1 || menuNum > 2)printf("そんな操作はないよ\n");
+			else break;
 		}
 	}
 }
 //一覧表示更新
 void ShowCell(CELL* endCell)
 {
+	int no = 0;
+
 	printf("\n[要素の一覧表示]\n");
 	printf("要素一覧: {\n");
-
-	int no = 0;
 	//nextにアドレスがある限りループ
 	while (endCell->next != nullptr) {
-
 		endCell = endCell->next;
 		printf("%d: ", no);
-		printf("%s,\n", endCell->val);		//5桁まで右揃え
+		printf("`%s`,\n", endCell->val);		//5桁まで右揃え
 		no++;
-
 	}
 	printf("}\n");
 	printf("\n要素数: %d\n", no);
@@ -214,13 +204,9 @@ void DisplayUpdate(CELL cell, int& menuNum, int& selectNum)
 			selectNum = 0;
 			scanf_s("%d", &selectNum);
 			scanf_s("%*[^\n]%*c");
-
-			if (selectNum != 1 && selectNum != 2 && selectNum != 9) {
-				printf("数字を入力してね\n");
-			}
-			else {
-				break;
-			}
+			//選択できるメニュー以外を入力したら
+			if (selectNum != 1 && selectNum != 2 && selectNum != 9) printf("そんな操作はないよ\n");
+			else break;
 		}
 
 		if (selectNum == 9) {
@@ -242,12 +228,8 @@ void DisplayUpdate(CELL cell, int& menuNum, int& selectNum)
 			scanf_s("%d", &selectNum);
 			scanf_s("%*[^\n]%*c");
 
-			if (selectNum != 1 && selectNum != 2) {
-				printf("数字を入力してね\n");
-			}
-			else {
-				break;
-			}
+			if (selectNum != 1 && selectNum != 2)printf("そんな操作はないよ\n");
+			else break;
 		}
 		//要素の表示に戻る
 		if (selectNum == 1) {
@@ -263,30 +245,42 @@ void DisplayUpdate(CELL cell, int& menuNum, int& selectNum)
 	else if (selectNum == 2) {
 		int displauNum = 0;
 
+		int maxNum = GetCellAllNum(cell);
+
 		printf("\n[表示したい要素を指定]\n");
 		printf("表示したい要素を指定してください\n");
+		while (true) {
+			scanf_s("%d", &displauNum);
+			scanf_s("%*[^\n]%*c");
 
-		scanf_s("%d", &displauNum);
+			//指定した要素が存在したら
+			if (displauNum < maxNum) {
 
-		CELL* displayCell = GetInsertListAddress(&cell, displauNum + 1);
-		//表示
-		printf("%d : %s\n", displauNum, displayCell->val);
+				CELL* displayCell = &cell;
+				for (int i = 0; i < displauNum + 1; i++) {
+					displayCell = displayCell->next;
+				}
+				//表示
+				printf("%d : %s\n", displauNum, displayCell->val);
+			}
+			else {
+				printf("その要素は存在しないよ\n");
+			}
+			break;
+		}
 
 		printf("\n---------------------------\n");
 		printf("1.要素の表示に戻る\n");
 		printf("2.要素の操作に戻る\n");
 
+		//操作を選択
 		while (true) {
 			selectNum = 0;
 			scanf_s("%d", &selectNum);
 			scanf_s("%*[^\n]%*c");
 
-			if (selectNum != 1 && selectNum != 2) {
-				printf("数字を入力してね\n");
-			}
-			else {
-				break;
-			}
+			if (selectNum != 1 && selectNum != 2) printf("そんな操作はないよ\n");
+			else break;
 		}
 		//要素の表示に戻る
 		if (selectNum == 1) {
