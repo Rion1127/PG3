@@ -1,5 +1,9 @@
 #include "DxLib.h"
-#include "SceneManager.h"
+#include <list>
+#include <vector>
+#include <memory>
+#include "Enemy.h"
+#include "Player.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "LE2A_スズキ_リオン";
@@ -9,6 +13,8 @@ const int WIN_WIDTH = 600;
 
 // ウィンドウ縦幅
 const int WIN_HEIGHT = 400;
+
+bool BallCollision(const Vector2& a, const float& aSize, const Vector2& b, const float& bSize);
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
                    _In_ int nCmdShow) {
@@ -39,14 +45,23 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// 画像などのリソースデータの変数宣言と読み込み
 
+	//敵
+	std::vector< std::unique_ptr<Enemy>> enemies_;
 
-	// ゲームループで使う変数の宣言
-	SceneManager* sceneManager = SceneManager::GetInstance();
+	for (int i = 0; i < 5; i++) {
+		std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+		Vector2 pos = {
+			(float)100 + 50 * i,
+			(float)100
+		};
 
-	int color_ = 0xffffff;
+		newEnemy->Ini(pos);
 
-	const char* nowSceneName = "a";
-	const char* NextSceneName = "a";
+		enemies_.emplace_back(std::move(newEnemy));
+	}
+
+	Player player_;
+	player_.Ini();
 
 	// 最新のキーボード情報用
 	char keys[256] = {0};
@@ -67,55 +82,64 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		ClearDrawScreen();
 		//---------  ここからプログラムを記述  ----------//
 
-		int nextScene = sceneManager->GetSceneNum() + 1;
+		
 		// 更新処理
+		
+		//リセット
+		if (keys[KEY_INPUT_R] && oldkeys[KEY_INPUT_R] == false)
+		{
+			//サイズがゼロの場合リセットを通るようにする
+			if (enemies_.size() <= 0) {
+				//敵初期化
+				for (int i = 0; i < 5; i++) {
+					std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+					Vector2 pos = {
+						(float)100 + 50 * i,
+						(float)100
+					};
 
-		//シーンチェンジ
-		if (keys[KEY_INPUT_SPACE] == 1 &&
-			oldkeys[KEY_INPUT_SPACE] == 0   ) {
-			//次のシーンを代入
-			sceneManager->ChangeScene(nextScene);
+					newEnemy->Ini(pos);
+
+					enemies_.emplace_back(std::move(newEnemy));
+					Enemy::isAllDead = false;
+				}
+				//プレイヤー初期化
+				player_.Ini();
+			}
 		}
 
-		//背景色変更
-		if (sceneManager->GetSceneNum() == SceneNum::Title_) {
-			color_ = 0xAA5050;
-			nowSceneName = "TitleScene";
-			NextSceneName = "NewGameScene";
+		//敵更新
+		for (std::unique_ptr<Enemy>& enemy : enemies_) {
+			enemy->Update();
 		}
-		else if (sceneManager->GetSceneNum() == SceneNum::NewGame_) {
-			color_ = 0x50AA50;
-			nowSceneName = "NewGameScene";
-			NextSceneName = "GamePlayScene";
+		for (std::unique_ptr<Enemy>& enemy : enemies_) {
+			if (enemy->GetAllDead()) {
+				enemies_.clear();
+			}
 		}
-		else if (sceneManager->GetSceneNum() == SceneNum::GamePlay_) {
-			color_ = 0x5050AA;
-			nowSceneName = "GamePlayScene";
-			NextSceneName = "GameClearScene";
-		}
-		else if (sceneManager->GetSceneNum() == SceneNum::GameClear_) {
-			color_ = 0xAA50AA;
-			nowSceneName = "GameClearScene";
-			NextSceneName = "TitleScene";
+		//プレイヤー更新
+		player_.Update(keys);
+		//当たり判定
+		for (std::unique_ptr<Enemy>& enemy : enemies_) {
+			if (BallCollision(player_.GetColPos(), player_.radius, enemy->GetColPos(), enemy->radius_)) {
+				player_.Oncollision();
+				enemy->SetIsDead();
+			}
 		}
 
 		// 描画処理
-		//背景
-		DrawBox(0, 0, WIN_WIDTH, WIN_HEIGHT, color_, true);
+		
+		//敵描画
+		for (std::unique_ptr<Enemy>& enemy : enemies_) {
+			enemy->Draw();
+		}
+		//プレイヤー描画
+		player_.Draw();
 
-		DrawFormatString(100, 100, 0xffffff,
-			"SceneNum : %d",
-			sceneManager->GetSceneNum());
-		DrawFormatString(100, 120, 0xffffff,
-			"Press SPACE");
+		//説明
+		DrawFormatString(0, 0, 0xffffff, "WASD :移動");
 
-		//現在と次のシーンを表示
-		DrawFormatString(0, 0, 0xffffff,
-			"NowScene  : ");
-		DrawFormatString(0, 20, 0xffffff,
-			"NextScene : ");
-		DrawString(100, 0, nowSceneName, 0xffffff);
-		DrawString(100, 20, NextSceneName, 0xffffff);
+		DrawFormatString(0, 20, 0xffffff, "R : リセット");
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
@@ -139,4 +163,21 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// 正常終了
 	return 0;
+}
+
+
+bool BallCollision(const Vector2& a, const float& aSize, const Vector2& b, const float& bSize) {
+	float x, y;
+	float r;
+
+	x = (float)pow(b.x - a.x, 2);
+	y = (float)pow(b.y - a.y, 2);
+
+	float pos = x + y;
+
+	r = (float)pow(aSize + bSize, 2);
+	if (pos <= r) {
+		return true;
+	}
+	return false;
 }
