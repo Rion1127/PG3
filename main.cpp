@@ -45,6 +45,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// 画像などのリソースデータの変数宣言と読み込み
 
+	Player player_;
+	player_.Ini();
+
 	//敵
 	std::vector< std::unique_ptr<Enemy>> enemies_;
 
@@ -55,13 +58,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			(float)100
 		};
 
-		newEnemy->Ini(pos);
+		newEnemy->Ini(pos, &player_);
 
 		enemies_.emplace_back(std::move(newEnemy));
 	}
-
-	Player player_;
-	player_.Ini();
 
 	// 最新のキーボード情報用
 	char keys[256] = {0};
@@ -82,31 +82,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		ClearDrawScreen();
 		//---------  ここからプログラムを記述  ----------//
 
-		
 		// 更新処理
-		
-		//リセット
-		if (keys[KEY_INPUT_R] && oldkeys[KEY_INPUT_R] == false)
-		{
-			//サイズがゼロの場合リセットを通るようにする
-			if (enemies_.size() <= 0) {
-				//敵初期化
-				for (int i = 0; i < 5; i++) {
-					std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
-					Vector2 pos = {
-						(float)100 + 50 * i,
-						(float)100
-					};
-
-					newEnemy->Ini(pos);
-
-					enemies_.emplace_back(std::move(newEnemy));
-					Enemy::isAllDead = false;
-				}
-				//プレイヤー初期化
-				player_.Ini();
-			}
-		}
 
 		//敵更新
 		for (std::unique_ptr<Enemy>& enemy : enemies_) {
@@ -119,13 +95,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		}
 		//プレイヤー更新
 		player_.Update(keys);
-		//当たり判定
-		for (std::unique_ptr<Enemy>& enemy : enemies_) {
-			if (BallCollision(player_.GetColPos(), player_.radius, enemy->GetColPos(), enemy->radius_)) {
-				player_.Oncollision();
-				enemy->SetIsDead();
-			}
-		}
+		
 
 		// 描画処理
 		
@@ -138,8 +108,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		//説明
 		DrawFormatString(0, 0, 0xffffff, "WASD :移動");
-
-		DrawFormatString(0, 20, 0xffffff, "R : リセット");
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面

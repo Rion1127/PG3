@@ -12,6 +12,7 @@ public:
 
 	void Oncollision();
 
+	Vector2 GetPos() { return pos_; }
 	Vector2 GetColPos() { return colPos_; }
 
 	int color = 0xff0000;
