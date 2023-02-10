@@ -9,10 +9,16 @@ enum MenuNum {
 	DeleteTask_,	//タスク削除
 	DisplayTask_,	//タスク表示
 	UpdateTask,		//タスク更新
-	AddMenmber,		//担当者追加
-	DeleteMenmber,	//担当者削除
-	DisplayMenmber,	//担当者表示
+	AddMember,		//担当者追加
+	DeleteMember,	//担当者削除
+	DisplayMember,	//担当者表示
 	MenuNumEnd_		//これ以下に入力しないように
+};
+
+enum MenuType {
+	MemberAddOnly,		//担当者追加のみ表示（担当者が０名の時）
+	TaskAddOnly,		//タスク追加＋メンバー項目すべて表示（担当者が１名以上＆タスクが０個）
+	All,				//すべて表示
 };
 
 class TaskManager
