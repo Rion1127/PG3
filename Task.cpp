@@ -19,25 +19,27 @@ void Task::Draw()
 
 void Task::Init()
 {
-	id			= "00";
+	
 	manager		= new Manager;
 	manager->Init();
-	title		= "No Title";
-	content		= "No Content";
-	priority	= "No Proiority";
-	time		= "No Time";
-	status		= "No Status";
+	strcpy_s(id,3,"00");
+	strcpy_s(title,9,"No Title");
+	strcpy_s(content, 11, "No Content");
+	strcpy_s(priority, 13, "No Proiority");
+	strcpy_s(time, 8, "No Time");
+	strcpy_s(status, 10, "No Status");
 }
 
 void Task::SetTask(Task task)
 {
-	id			= task.id;
 	manager		= task.manager;
-	title		= task.title;
-	content		= task.content;
-	priority	= task.priority;
-	time		= task.time;
-	status		= task.status;
+
+	strcpy_s(id, 5, task.id);
+	strcpy_s(title, 20, task.title);
+	strcpy_s(content, 30, task.content);
+	strcpy_s(priority, 15, task.priority);
+	strcpy_s(time, 10, task.time);
+	strcpy_s(status, 10, task.status);
 }
 
 void Manager::Init()

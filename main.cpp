@@ -1,13 +1,10 @@
 #include <stdio.h>
-#include "Task.h"
+#include "TaskManager.h"
 
 int main() {
-
-	Task a;
-
-	a.Init();
-
-	a.Draw();
+	TaskManager taskManager;
+	
+	taskManager.Update();
 
 	return 0;
 }
