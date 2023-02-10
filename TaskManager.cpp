@@ -63,6 +63,7 @@ void TaskManager::MenuUpdate()
 	printf("\n---------------------------\n");
 	printf("操作を選択してください(数字を入力)\n");
 	while (true) {
+		printf(">");
 		scanf_s("%d", &menuNum);
 		scanf_s("%*[^\n]%*c");
 
@@ -83,6 +84,7 @@ void TaskManager::AddTask()
 			printf("\n---------------------------\n");
 			printf("タスクidを入力してください\n");
 			int id_;
+			printf(">");
 			scanf_s("%d", &id_);
 			scanf_s("%*[^\n]%*c");
 
@@ -100,6 +102,7 @@ void TaskManager::AddTask()
 			printf("メンバーIDを入力してください\n");
 
 			int member;
+			printf(">");
 			scanf_s("%d", &member);
 			scanf_s("%*[^\n]%*c");
 
@@ -118,6 +121,7 @@ void TaskManager::AddTask()
 		printf("\n---------------------------\n");
 		printf("題名を入力してください\n");
 		char title[20];
+		printf(">");
 		scanf_s("%s", title, 20);
 		scanf_s("%*[^\n]%*c");
 
@@ -126,6 +130,7 @@ void TaskManager::AddTask()
 		printf("\n---------------------------\n");
 		printf("内容を入力してください\n");
 		char content[30];
+		printf(">");
 		scanf_s("%s", content, 30);
 		scanf_s("%*[^\n]%*c");
 
@@ -134,6 +139,7 @@ void TaskManager::AddTask()
 		printf("\n---------------------------\n");
 		printf("優先度を入力してください\n");
 		char priority[15];
+		printf(">");
 		scanf_s("%s", priority, 15);
 		scanf_s("%*[^\n]%*c");
 
@@ -142,6 +148,7 @@ void TaskManager::AddTask()
 		printf("\n---------------------------\n");
 		printf("期限を入力してください\n");
 		char time[10];
+		printf(">");
 		scanf_s("%s", time, 10);
 		scanf_s("%*[^\n]%*c");
 
@@ -168,6 +175,7 @@ void TaskManager::DeleteTask()
 			printf("タスクIDを入力してください\n");
 
 			int member;
+			printf(">");
 			scanf_s("%d", &member);
 			scanf_s("%*[^\n]%*c");
 
@@ -214,10 +222,15 @@ void TaskManager::UpdateTask()
 			//タスク表示
 			DisplayTask();
 			printf("\nタスクIDを入力してください\n");
+			printf("'0'キーでメニューに戻ります\n");
+
 
 			int member;
+			printf(">");
 			scanf_s("%d", &member);
 			scanf_s("%*[^\n]%*c");
+			//メニューに戻る
+			if (member == 0) break;
 
 			auto taskitr = task_.find(member);        // タスクが設定されているか探す
 			if (taskitr != task_.end()) {
@@ -229,12 +242,13 @@ void TaskManager::UpdateTask()
 					TaskItem itemNum;	//項目
 					while (true) {
 						printf("更新する内容を選択してください(数字を入力)\n");
-						printf("%d.メンバー\n"		,TaskItem::Manager_);
+						printf("%d.担当者\n"		,TaskItem::Manager_);
 						printf("%d.タイトル\n"		,TaskItem::Title_);
 						printf("%d.内容\n"		,TaskItem::Content_);
 						printf("%d.優先度\n"		,TaskItem::Priority_);
 						printf("%d.期限\n"		,TaskItem::Time_);
 						printf("%d.ステータス\n"	,TaskItem::Status_);
+						printf(">");
 						scanf_s("%d", &itemNum);
 						scanf_s("%*[^\n]%*c");
 
@@ -242,13 +256,14 @@ void TaskManager::UpdateTask()
 						else break;
 					}
 
-					//メンバー
+					//担当者
 					if (itemNum == TaskItem::Manager_) {
 						DisplayMember();
 						while (true) {
-							printf("\nメンバーIDを入力してください\n");
+							printf("\n担当者IDを入力してください\n");
 
 							int member;
+							printf(">");
 							scanf_s("%d", &member);
 							scanf_s("%*[^\n]%*c");
 
@@ -256,12 +271,12 @@ void TaskManager::UpdateTask()
 							if (memberItr != member_.end()) {
 								//設定されている場合の処理
 								taskitr->second.manager = member_.at(member);
-								printf("メンバーを更新しました\n");
+								printf("担当者を更新しました\n");
 								break;
 							}
 							else {
 								//設定されていない場合の処理
-								printf("メンバーIDが一致しませんでした\n");
+								printf("担当者IDが一致しませんでした\n");
 							}
 						}
 					}
@@ -269,6 +284,7 @@ void TaskManager::UpdateTask()
 					else if (itemNum == TaskItem::Title_) {
 						printf("\n題名を入力してください\n");
 						char title[20];
+						printf(">");
 						scanf_s("%s", title, 20);
 						scanf_s("%*[^\n]%*c");
 
@@ -278,6 +294,7 @@ void TaskManager::UpdateTask()
 					else if (itemNum == TaskItem::Content_) {
 						printf("\n内容を入力してください\n");
 						char content[30];
+						printf(">");
 						scanf_s("%s", content, 30);
 						scanf_s("%*[^\n]%*c");
 
@@ -287,6 +304,7 @@ void TaskManager::UpdateTask()
 					else if (itemNum == TaskItem::Priority_) {
 						printf("\n優先度を入力してください\n");
 						char priority[15];
+						printf(">");
 						scanf_s("%s", priority, 15);
 						scanf_s("%*[^\n]%*c");
 
@@ -296,6 +314,7 @@ void TaskManager::UpdateTask()
 					else if (itemNum == TaskItem::Time_) {
 						printf("\n期限を入力してください\n");
 						char time[10];
+						printf(">");
 						scanf_s("%s", time, 10);
 						scanf_s("%*[^\n]%*c");
 
@@ -310,6 +329,7 @@ void TaskManager::UpdateTask()
 
 						int status;
 						while (true) {
+							printf(">");
 							scanf_s("%d", &status);
 							scanf_s("%*[^\n]%*c");
 							if (status < 1 || status > 3)printf("そんな操作はないよ\n");
@@ -350,6 +370,7 @@ void TaskManager::AddMember()
 		printf("\n---------------------------\n");
 		printf("メンバーidを入力してください\n");
 		int id_;
+		printf(">");
 		scanf_s("%d", &id_);
 		scanf_s("%*[^\n]%*c");
 
@@ -358,6 +379,7 @@ void TaskManager::AddMember()
 		printf("\n---------------------------\n");
 		printf("氏名を入力してください\n");
 		char name_[20];
+		printf(">");
 		scanf_s("%s", name_, 20);
 		scanf_s("%*[^\n]%*c");
 
@@ -366,6 +388,7 @@ void TaskManager::AddMember()
 		printf("\n---------------------------\n");
 		printf("クラスを入力してください\n");
 		char className_[10];
+		printf(">");
 		scanf_s("%s", className_, 10);
 		scanf_s("%*[^\n]%*c");
 
@@ -388,6 +411,7 @@ void TaskManager::DeleteMember()
 			printf("メンバーIDを入力してください\n");
 
 			int member;
+			printf(">");
 			scanf_s("%d", &member);
 			scanf_s("%*[^\n]%*c");
 

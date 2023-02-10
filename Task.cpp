@@ -7,7 +7,7 @@ Task::~Task()
 
 void Task::Draw()
 {
-	printf("ID : %d\n", id);
+	printf("タスクID : %d\n", id);
 	printf("担当者 : %s\n", manager.managerName);
 	printf("題名 : %s\n", title);
 	printf("内容 : %s\n", content);
@@ -42,7 +42,7 @@ void Task::SetTask(Task task)
 
 void Manager::Draw()
 {
-	printf("ID : %d\n", id);
+	printf("担当者ID : %d\n", id);
 	printf("氏名 : %s\n",managerName);
 	printf("クラス : %s\n", className);
 }
