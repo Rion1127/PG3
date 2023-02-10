@@ -1,6 +1,7 @@
 #pragma once
 #include "Task.h"
 #include <vector>
+#include <map>
 
 enum MenuNum {
 	Menu_,
@@ -29,13 +30,15 @@ private:
 
 	void AddMember();
 
+	void DisplayMember();
+
 private:
 
 	void Delete(int num);
 	//タスク
-	std::vector<Task> task_;
+	std::map<int, Task> task_;
 
 	//チームメンバー
-	std::vector<Manager> member_;
+	std::map<int, Manager> member_;
 };
 

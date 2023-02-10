@@ -3,9 +3,9 @@
 #include <string.h>
 //担当者
 struct Manager {
-	char id[3];
-	char managerName[20];
-	char className[10];
+	int id;
+	char managerName[21];
+	char className[11];
 
 	void Draw();
 	void Init();
@@ -14,13 +14,13 @@ struct Manager {
 struct Task
 {
 	~Task();
-	char id[5];			//ID
+	int id;			//ID
 	Manager manager;	//担当者
-	char title		[20];		//題名
-	char content	[30];		//内容
-	char priority	[15];		//優先度
-	char time		[10];			//期限
-	char status		[10];		//ステータス(完了・未完了)
+	char title		[21];		//題名
+	char content	[31];		//内容
+	char priority	[16];		//優先度
+	char time		[11];			//期限
+	char status		[11];		//ステータス(完了・未完了)
 
 	void Init();
 
