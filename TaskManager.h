@@ -24,17 +24,21 @@ private:
 
 	MenuNum menuNum_;
 
+	void MenuUpdate();
+
 	void AddTask();
+
+	void DeleteTask();
 
 	void Display();
 
 	void AddMember();
 
+	void DeleteMember();
+
 	void DisplayMember();
 
 private:
-
-	void Delete(int num);
 	//É^ÉXÉN
 	std::map<int, Task> task_;
 
