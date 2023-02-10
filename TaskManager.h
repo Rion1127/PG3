@@ -5,13 +5,14 @@
 
 enum MenuNum {
 	Menu_,
-	Add_,
-	Delete_,
-	Display_,
+	AddTask_,
+	DeleteTask_,
+	DisplayTask_,
+	UpdateTask,
 	AddMenmber,
 	DeleteMenmber,
 	DisplayMenmber,
-	End_
+	MenuNumEnd_
 };
 
 class TaskManager

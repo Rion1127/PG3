@@ -11,6 +11,17 @@ struct Manager {
 	void Init();
 };
 
+enum TaskItem {
+	None_,
+	Manager_,
+	Title_,
+	Content_,
+	Priority_,
+	Time_,
+	Status_,
+	TaskItemEnd_	//End_ˆÈ~‚Éenum‚ğ’Ç‰Á‚µ‚È‚¢‚æ‚¤‚É
+};
+
 struct Task
 {
 	~Task();
