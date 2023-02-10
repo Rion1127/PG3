@@ -26,15 +26,15 @@ void TaskManager::Update()
 		else if (menuNum_ == MenuNum::UpdateTask) {
 			UpdateTask();
 		}
-		//メンバー追加
+		//担当者追加
 		else if (menuNum_ == MenuNum::AddMenmber) {
 			AddMember();
 		}
-		//メンバー削除
+		//担当者削除
 		else if (menuNum_ == MenuNum::DeleteMenmber) {
 			DeleteMember();
 		}
-		//メンバー表示
+		//担当者表示
 		else if (menuNum_ == MenuNum::DisplayMenmber) {
 			DisplayMember();
 			//メニューに戻る
@@ -53,9 +53,9 @@ void TaskManager::MenuUpdate()
 	printf("%d.タスクの削除\n", MenuNum::DeleteTask_);
 	printf("%d.タスクの表示\n", MenuNum::DisplayTask_);
 	printf("%d.タスクの更新\n", MenuNum::UpdateTask);
-	printf("%d.メンバー追加\n", MenuNum::AddMenmber);
-	printf("%d.メンバー削除\n", MenuNum::DeleteMenmber);
-	printf("%d.メンバー表示\n", MenuNum::DisplayMenmber);
+	printf("%d.担当者追加\n", MenuNum::AddMenmber);
+	printf("%d.担当者削除\n", MenuNum::DeleteMenmber);
+	printf("%d.担当者表示\n", MenuNum::DisplayMenmber);
 	printf("%d.終了\n", MenuNum::MenuNumEnd_);
 
 	MenuNum menuNum;
@@ -91,7 +91,7 @@ void TaskManager::AddTask()
 			newTask_->id = id_;
 		}
 		else {
-			printf("メンバーがいません\n");
+			printf("担当者がいません\n");
 			break;
 		}
 
@@ -99,7 +99,7 @@ void TaskManager::AddTask()
 
 		DisplayMember();
 		while (true) {
-			printf("メンバーIDを入力してください\n");
+			printf("担当者IDを入力してください\n");
 
 			int member;
 			printf(">");
@@ -114,7 +114,7 @@ void TaskManager::AddTask()
 			}
 			else {
 				//設定されていない場合の処理
-				printf("メンバーIDが一致しませんでした\n");
+				printf("担当者IDが一致しませんでした\n");
 			}
 		}
 
@@ -360,7 +360,7 @@ void TaskManager::UpdateTask()
 	//メニューに戻る
 	menuNum_ = MenuNum::Menu_;
 }
-//メンバー追加
+//担当者追加
 void TaskManager::AddMember()
 {
 	Manager* manager = new Manager;
@@ -368,7 +368,7 @@ void TaskManager::AddMember()
 
 	while (true) {
 		printf("\n---------------------------\n");
-		printf("メンバーidを入力してください\n");
+		printf("担当者idを入力してください\n");
 		int id_;
 		printf(">");
 		scanf_s("%d", &id_);
@@ -396,19 +396,19 @@ void TaskManager::AddMember()
 
 		break;
 	}
-	printf("メンバーを追加しました\n");
+	printf("担当者を追加しました\n");
 
 	member_.insert(std::make_pair(manager->id, *manager));
 
 	menuNum_ = MenuNum::Menu_;
 }
-//メンバー削除
+//担当者削除
 void TaskManager::DeleteMember()
 {
 	if (member_.size() != 0) {
 		DisplayMember();
 		while (true) {
-			printf("メンバーIDを入力してください\n");
+			printf("担当者IDを入力してください\n");
 
 			int member;
 			printf(">");
@@ -419,22 +419,22 @@ void TaskManager::DeleteMember()
 			if (itr != member_.end()) {
 				//設定されている場合の処理
 				member_.erase(itr->first);
-				printf("メンバーを削除しました\n");
+				printf("担当者を削除しました\n");
 				break;
 			}
 			else {
 				//設定されていない場合の処理
-				printf("メンバーIDが一致しませんでした\n");
+				printf("担当者IDが一致しませんでした\n");
 			}
 		}
 	}
 	else {
-		printf("メンバーがいません\n");
+		printf("担当者がいません\n");
 	}
 	//メニューに戻る
 	menuNum_ = MenuNum::Menu_;
 }
-//メンバー表示
+//担当者表示
 void TaskManager::DisplayMember()
 {
 	if (member_.size() != 0) {
@@ -445,6 +445,6 @@ void TaskManager::DisplayMember()
 		}
 	}
 	else {
-		printf("メンバー無し\n");
+		printf("担当者無し\n");
 	}
 }
