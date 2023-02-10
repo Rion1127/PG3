@@ -122,7 +122,7 @@ void TaskManager::AddTask()
 			scanf_s("%d", &member);
 			scanf_s("%*[^\n]%*c");
 
-			auto itr = member_.find(member);        // "xyz" ‚ªİ’è‚³‚ê‚Ä‚¢‚é‚©H
+			auto itr = member_.find(member);        // ID‚ªİ’è‚³‚ê‚Ä‚¢‚é‚©’T‚·
 			if (itr != member_.end()) {
 				//İ’è‚³‚ê‚Ä‚¢‚éê‡‚Ìˆ—
 				newTask_->manager = member_.at(member);
