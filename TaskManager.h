@@ -8,6 +8,8 @@ enum MenuNum {
 	Delete_,
 	Display_,
 	AddMenmber,
+	DeleteMenmber,
+	DisplayMenmber,
 	End_
 };
 
@@ -21,16 +23,19 @@ private:
 
 	MenuNum menuNum_;
 
-	void AddUpdate();
+	void AddTask();
+
+	void Display();
+
+	void AddMember();
 
 private:
-	void Add(Task task);
 
 	void Delete(int num);
 	//タスク
 	std::vector<Task> task_;
 
 	//チームメンバー
-	std::vector<Manager> menber_;
+	std::vector<Manager> member_;
 };
 

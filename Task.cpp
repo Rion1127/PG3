@@ -2,13 +2,13 @@
 
 Task::~Task()
 {
-	delete manager;
+	//delete manager;
 }
 
 void Task::Draw()
 {
 	printf("ID : %s\n", id);
-	printf("íSìñé“ : %s\n", manager->managerName);
+	printf("íSìñé“ : %s\n", manager.managerName);
 	printf("ëËñº : %s\n", title);
 	printf("ì‡óe : %s\n", content);
 	printf("óDêÊìx : %s\n", priority);
@@ -19,9 +19,7 @@ void Task::Draw()
 
 void Task::Init()
 {
-	
-	manager		= new Manager;
-	manager->Init();
+	manager.Init();
 	strcpy_s(id,3,"00");
 	strcpy_s(title,9,"No Title");
 	strcpy_s(content, 11, "No Content");
@@ -42,9 +40,16 @@ void Task::SetTask(Task task)
 	strcpy_s(status, 10, task.status);
 }
 
+void Manager::Draw()
+{
+	printf("ID : %s\n", id);
+	printf("éÅñº : %s\n",managerName);
+	printf("ÉNÉâÉX : %s\n", className);
+}
+
 void Manager::Init()
 {
-	id			= "00";
-	managerName = "A";
-	className	= "LE2A";
+	strcpy_s(id,3,"00");
+	strcpy_s(managerName,20,"A");
+	strcpy_s(className,10,"LE2A");
 }

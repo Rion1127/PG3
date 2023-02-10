@@ -4,11 +4,11 @@ void TaskManager::Update()
 {
 	Manager manager;
 
-	manager.id = "01";
-	manager.managerName = "suzuki";
-	manager.className = "LE2A";
+	strcpy_s(manager.id, 3, "00");
+	strcpy_s(manager.managerName, 20, "suzuki rion");
+	strcpy_s(manager.className, 10, "LE2A");
 
-	menber_.push_back(manager);
+	member_.push_back(manager);
 
 	while (true) {
 		//初期メニュー画面
@@ -18,7 +18,9 @@ void TaskManager::Update()
 			printf("2.タスクの削除\n");
 			printf("3.タスクの表示\n");
 			printf("4.メンバー追加\n");
-			printf("5.終了\n");
+			printf("5.メンバー削除\n");
+			printf("6.メンバー表示\n");
+			printf("7.終了\n");
 
 			MenuNum menuNum;
 
@@ -29,7 +31,7 @@ void TaskManager::Update()
 				scanf_s("%*[^\n]%*c");
 
 
-				if (menuNum < 1 || menuNum > 5)printf("そんな操作はないよ\n");
+				if (menuNum < 1 || menuNum > 7)printf("そんな操作はないよ\n");
 				else break;
 
 			}
@@ -41,10 +43,7 @@ void TaskManager::Update()
 		}
 		//追加
 		else if (menuNum_ == MenuNum::Add_) {
-			
-			AddUpdate();
-
-
+			AddTask();
 		}
 		//削除
 		else if (menuNum_ == MenuNum::Delete_) {
@@ -52,16 +51,8 @@ void TaskManager::Update()
 		}
 		//表示
 		else if (menuNum_ == MenuNum::Display_) {
-			if (task_.size() != 0) {
-				for (auto& task : task_) {
-					printf("\n");
-					task.Draw();
-					printf("\n");
-				}
-			}
-			else {
-				printf("\nタスク無し\n\n");
-			}
+			//タスク表示
+			Display();
 			printf("1.メニューへ戻る\n");
 
 			printf("操作を選択してください(数字を入力)\n");
@@ -69,7 +60,6 @@ void TaskManager::Update()
 			while (true) {
 				scanf_s("%d", &menuNum);
 				scanf_s("%*[^\n]%*c");
-
 
 				if (menuNum < 1 || menuNum > 1)printf("そんな操作はないよ\n");
 				else break;
@@ -79,12 +69,42 @@ void TaskManager::Update()
 			menuNum_ = MenuNum::Menu_;
 		}
 		else if (menuNum_ == MenuNum::AddMenmber) {
+			AddMember();
+		}
+		else if (menuNum_ == MenuNum::DeleteMenmber) {
+			
+		}
+		else if (menuNum_ == MenuNum::DisplayMenmber) {
+			if (member_.size() != 0) {
+				for (auto& member : member_) {
+					printf("\n");
+					member.Draw();
+					printf("\n");
+				}
+			}
+			else {
+				printf("メンバー無し\n");
+			}
 
+			printf("1.メニューへ戻る\n");
+
+			printf("操作を選択してください(数字を入力)\n");
+			int menuNum;
+			while (true) {
+				scanf_s("%d", &menuNum);
+				scanf_s("%*[^\n]%*c");
+
+				if (menuNum < 1 || menuNum > 1)printf("そんな操作はないよ\n");
+				else break;
+
+			}
+			//メニューに戻る
+			menuNum_ = MenuNum::Menu_;
 		}
 	}
 }
 
-void TaskManager::AddUpdate()
+void TaskManager::AddTask()
 {
 	Task* newTask_ = new Task;
 
@@ -101,11 +121,11 @@ void TaskManager::AddUpdate()
 
 		printf("\n---------------------------\n");
 		printf("メンバーを入力してください\n");
-		int member_;
-		scanf_s("%d", &member_);
+		int member;
+		scanf_s("%d", &member);
 		scanf_s("%*[^\n]%*c");
 
-		newTask_->manager = &menber_.at(0);
+		newTask_->manager = member_.at(0);
 
 		printf("\n---------------------------\n");
 		printf("題名を入力してください\n");
@@ -144,13 +164,63 @@ void TaskManager::AddUpdate()
 		break;
 	}
 	printf("タスクを追加しました\n");
-	task_.push_back(std::move(*newTask_));
+	task_.push_back(*newTask_);
 	
 	menuNum_ = MenuNum::Menu_;
 }
 
-void TaskManager::Add(Task task)
+void TaskManager::Display()
 {
+	if (task_.size() != 0) {
+		for (auto& task : task_) {
+			printf("\n");
+			task.Draw();
+			printf("\n");
+		}
+	}
+	else {
+		printf("\nタスク無し\n\n");
+	}
+}
+
+void TaskManager::AddMember()
+{
+
+	Manager* manager = new Manager;
+
+	manager->Init();
+
+	while (true) {
+		printf("\n---------------------------\n");
+		printf("メンバーidを入力してください\n");
+		char id_[5];
+		scanf_s("%s", id_, 5);
+		scanf_s("%*[^\n]%*c");
+
+		strcpy_s(manager->id, 5, id_);
+
+		printf("\n---------------------------\n");
+		printf("氏名を入力してください\n");
+		char name_[20];
+		scanf_s("%s", name_, 20);
+		scanf_s("%*[^\n]%*c");
+
+		strcpy_s(manager->managerName, 20, name_);
+
+		printf("\n---------------------------\n");
+		printf("クラスを入力してください\n");
+		char className_[10];
+		scanf_s("%s", className_, 10);
+		scanf_s("%*[^\n]%*c");
+
+		strcpy_s(manager->className, 20, className_);
+
+		break;
+	}
+	printf("メンバーを追加しました\n");
+	member_.push_back(*manager);
+
+	menuNum_ = MenuNum::Menu_;
 }
 
 void TaskManager::Delete(int num)

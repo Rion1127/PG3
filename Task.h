@@ -3,10 +3,11 @@
 #include <string.h>
 //’S“–Ò
 struct Manager {
-	const char* id;
-	const char* managerName;
-	const char* className;
+	char id[3];
+	char managerName[20];
+	char className[10];
 
+	void Draw();
 	void Init();
 };
 
@@ -14,7 +15,7 @@ struct Task
 {
 	~Task();
 	char id[5];			//ID
-	Manager* manager;	//’S“–Ò
+	Manager manager;	//’S“–Ò
 	char title		[20];		//‘è–¼
 	char content	[30];		//“à—e
 	char priority	[15];		//—Dæ“x
