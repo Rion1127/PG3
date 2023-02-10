@@ -12,13 +12,13 @@ struct Manager {
 };
 
 enum TaskItem {
-	None_,
-	Manager_,
-	Title_,
-	Content_,
-	Priority_,
-	Time_,
-	Status_,
+	None_,			//無し
+	Manager_,		//担当者
+	Title_,			//題名
+	Content_,		//内容
+	Priority_,		//優先度
+	Time_,			//期限
+	Status_,		//ステータス
 	TaskItemEnd_	//End_以降にenumを追加しないように
 };
 
@@ -36,6 +36,4 @@ struct Task
 	void Init();
 
 	void Draw();
-
-	void SetTask(Task task);
 };

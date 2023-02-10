@@ -28,18 +28,6 @@ void Task::Init()
 	strcpy_s(status, 10, "No Status");
 }
 
-void Task::SetTask(Task task)
-{
-	manager		= task.manager;
-
-	id = task.id;
-	strcpy_s(title, 20, task.title);
-	strcpy_s(content, 30, task.content);
-	strcpy_s(priority, 15, task.priority);
-	strcpy_s(time, 10, task.time);
-	strcpy_s(status, 10, task.status);
-}
-
 void Manager::Draw()
 {
 	printf("’S“–ŽÒID : %d\n", id);

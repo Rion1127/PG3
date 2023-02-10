@@ -4,15 +4,15 @@
 #include <map>
 
 enum MenuNum {
-	Menu_,
-	AddTask_,
-	DeleteTask_,
-	DisplayTask_,
-	UpdateTask,
-	AddMenmber,
-	DeleteMenmber,
-	DisplayMenmber,
-	MenuNumEnd_
+	Menu_,			//メニュー
+	AddTask_,		//タスク追加
+	DeleteTask_,	//タスク削除
+	DisplayTask_,	//タスク表示
+	UpdateTask,		//タスク更新
+	AddMenmber,		//担当者追加
+	DeleteMenmber,	//担当者削除
+	DisplayMenmber,	//担当者表示
+	MenuNumEnd_		//これ以下に入力しないように
 };
 
 class TaskManager
