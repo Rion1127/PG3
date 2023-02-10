@@ -95,8 +95,6 @@ void TaskManager::AddTask()
 			break;
 		}
 
-		printf("\n---------------------------\n");
-
 		DisplayMember();
 		while (true) {
 			printf("担当者IDを入力してください\n");
@@ -156,9 +154,12 @@ void TaskManager::AddTask()
 
 		strcpy_s(newTask_->status, 10, "未完了");
 
-		printf("タスクを追加しました\n");
-
 		task_.insert(std::make_pair(newTask_->id, *newTask_));
+
+		printf("タスクを以下の内容で追加しました\n\n");
+		printf("-----------------------------------------------\n");
+		task_.at(newTask_->id).Draw();
+		printf("-----------------------------------------------\n");
 
 		break;
 	}
@@ -203,10 +204,11 @@ void TaskManager::DeleteTask()
 void TaskManager::DisplayTask()
 {
 	if (task_.size() != 0) {
+		printf("-----------------------------------------------\n");
 		for (auto itr = task_.begin(); itr != task_.end(); itr++) {
-			printf("\n");
 			itr->second.Draw();
-			printf("\n");
+			printf("-----------------------------------------------\n");
+
 		}
 	}
 	else {
@@ -396,9 +398,14 @@ void TaskManager::AddMember()
 
 		break;
 	}
-	printf("担当者を追加しました\n");
+	
 
 	member_.insert(std::make_pair(manager->id, *manager));
+
+	printf("担当者を追加しました\n\n");
+	printf("-----------------------------------------------\n");
+	member_.at(manager->id).Draw();
+	printf("-----------------------------------------------\n");
 
 	menuNum_ = MenuNum::Menu_;
 }
@@ -438,10 +445,11 @@ void TaskManager::DeleteMember()
 void TaskManager::DisplayMember()
 {
 	if (member_.size() != 0) {
+		printf("-----------------------------------------------\n");
 		for (auto itr = member_.begin(); itr != member_.end(); itr++) {
-			printf("\n");
 			itr->second.Draw();
-			printf("\n");
+			printf("-----------------------------------------------\n");
+
 		}
 	}
 	else {
