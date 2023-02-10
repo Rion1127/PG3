@@ -18,7 +18,7 @@ void TaskManager::Update()
 		//表示
 		else if (menuNum_ == MenuNum::Display_) {
 			//タスク表示
-			Display();
+			DisplayTask();
 			//メニューに戻る
 			menuNum_ = MenuNum::Menu_;
 		}
@@ -71,7 +71,6 @@ void TaskManager::MenuUpdate()
 void TaskManager::AddTask()
 {
 	Task* newTask_ = new Task;
-
 	newTask_->Init();
 
 	while (true) {
@@ -111,10 +110,9 @@ void TaskManager::AddTask()
 			}
 		}
 
-
 		printf("\n---------------------------\n");
 		printf("題名を入力してください\n");
-		char title[21];
+		char title[20];
 		scanf_s("%s", title, 20);
 		scanf_s("%*[^\n]%*c");
 
@@ -122,7 +120,7 @@ void TaskManager::AddTask()
 
 		printf("\n---------------------------\n");
 		printf("内容を入力してください\n");
-		char content[31];
+		char content[30];
 		scanf_s("%s", content, 30);
 		scanf_s("%*[^\n]%*c");
 
@@ -130,7 +128,7 @@ void TaskManager::AddTask()
 
 		printf("\n---------------------------\n");
 		printf("優先度を入力してください\n");
-		char priority[16];
+		char priority[15];
 		scanf_s("%s", priority, 15);
 		scanf_s("%*[^\n]%*c");
 
@@ -138,7 +136,7 @@ void TaskManager::AddTask()
 
 		printf("\n---------------------------\n");
 		printf("期限を入力してください\n");
-		char time[11];
+		char time[10];
 		scanf_s("%s", time, 10);
 		scanf_s("%*[^\n]%*c");
 
@@ -160,7 +158,7 @@ void TaskManager::DeleteTask()
 	//タスクがある場合
 	if (task_.size() != 0) {
 		//タスク表示
-		Display();
+		DisplayTask();
 		while (true) {
 			printf("タスクIDを入力してください\n");
 
@@ -189,10 +187,9 @@ void TaskManager::DeleteTask()
 	menuNum_ = MenuNum::Menu_;
 }
 //タスク表示
-void TaskManager::Display()
+void TaskManager::DisplayTask()
 {
 	if (task_.size() != 0) {
-
 		for (auto itr = task_.begin(); itr != task_.end(); itr++) {
 			printf("\n");
 			itr->second.Draw();
@@ -202,15 +199,15 @@ void TaskManager::Display()
 	else {
 		printf("\nタスク無し\n\n");
 	}
-
-
+}
+//タスク更新
+void TaskManager::UpdateTask()
+{
 }
 //メンバー追加
 void TaskManager::AddMember()
 {
-
 	Manager* manager = new Manager;
-
 	manager->Init();
 
 	while (true) {
@@ -224,7 +221,7 @@ void TaskManager::AddMember()
 
 		printf("\n---------------------------\n");
 		printf("氏名を入力してください\n");
-		char name_[21];
+		char name_[20];
 		scanf_s("%s", name_, 20);
 		scanf_s("%*[^\n]%*c");
 
@@ -232,7 +229,7 @@ void TaskManager::AddMember()
 
 		printf("\n---------------------------\n");
 		printf("クラスを入力してください\n");
-		char className_[11];
+		char className_[10];
 		scanf_s("%s", className_, 10);
 		scanf_s("%*[^\n]%*c");
 
