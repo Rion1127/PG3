@@ -95,20 +95,31 @@ void TaskManager::AddTask()
 			//’S“–Ò‚ªˆêlˆÈã‚¢‚éê‡
 			if (member_.size() != 0) {
 				printf("’S“–ÒID‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢\n");
+				printf("’S“–Ò‚ğİ’è‚µ‚È‚¢ê‡'999'‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢\n");
 
 				int member;
 				printf(">");
 				scanf_s("%d", &member);
 				scanf_s("%*[^\n]%*c");
-				auto itr = member_.find(member);        // ID‚ªİ’è‚³‚ê‚Ä‚¢‚é‚©’T‚·
-				if (itr != member_.end()) {
-					//İ’è‚³‚ê‚Ä‚¢‚éê‡‚Ìˆ—
-					newTask_->manager = member_.at(member);
-					break;
+				//’S“–Ò‚ğİ’è‚·‚éê‡
+				if (member != 999) {
+					auto itr = member_.find(member);        // ID‚ªİ’è‚³‚ê‚Ä‚¢‚é‚©’T‚·
+					if (itr != member_.end()) {
+						//İ’è‚³‚ê‚Ä‚¢‚éê‡‚Ìˆ—
+						newTask_->manager = member_.at(member);
+						break;
+					}
+					else {
+						//İ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Ìˆ—
+						printf("’S“–ÒID‚ªˆê’v‚µ‚Ü‚¹‚ñ‚Å‚µ‚½\n");
+					}
 				}
+				//’S“–Ò‚ğİ’è‚µ‚È‚¢ê‡
 				else {
-					//İ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Ìˆ—
-					printf("’S“–ÒID‚ªˆê’v‚µ‚Ü‚¹‚ñ‚Å‚µ‚½\n");
+					//’S“–Ò–³‚µƒf[ƒ^‚ğ‘ã“ü
+					printf("'’S“–Ò–³‚µ'‚Åİ’è‚µ‚Ü‚·\n");
+					newTask_->manager.Init();
+					break;
 				}
 			}
 			//’S“–Ò‚ª‚¢‚È‚¢ê‡
