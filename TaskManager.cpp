@@ -48,88 +48,29 @@ void TaskManager::Update()
 //メニュー更新
 void TaskManager::MenuUpdate()
 {
-	//メニューの表示タイプ
-	MenuType displayMenuType = MenuType::All;
 	MenuNum menuNum;
-
-	if (member_.size() <= 0)displayMenuType = MenuType::MemberAddOnly;
-	if (member_.size() > 0 && task_.size() <= 0)displayMenuType = MenuType::TaskAddOnly;
-
 	printf("\n[メニュー]\n");
-	//担当者追加のみ表示（担当者が０名の時）
-	if (displayMenuType == MenuType::MemberAddOnly) {
-		printf("%d.担当者追加\n", MenuNum::AddMember);
-		printf("%d.終了\n", MenuNum::MenuNumEnd_);
 
-		printf("\n---------------------------\n");
-		printf("操作を選択してください(数字を入力)\n");
-		while (true) {
-			printf(">");
-			scanf_s("%d", &menuNum);
-			scanf_s("%*[^\n]%*c");
-			
-			if (menuNum != MenuNum::AddMember &&
-				menuNum != MenuNum::MenuNumEnd_) {
-				//表示されているメニュー以外を選択したら
-				printf("そんな操作はないよ\n");
-			}
-			else break;
-		}
+	printf("%d.タスクの追加\n", MenuNum::AddTask_);
+	printf("%d.タスクの削除\n", MenuNum::DeleteTask_);
+	printf("%d.タスクの表示\n", MenuNum::DisplayTask_);
+	printf("%d.タスクの更新\n", MenuNum::UpdateTask);
+	printf("%d.担当者追加\n", MenuNum::AddMember);
+	printf("%d.担当者削除\n", MenuNum::DeleteMember);
+	printf("%d.担当者表示\n", MenuNum::DisplayMember);
+	printf("%d.終了\n", MenuNum::MenuNumEnd_);
+
+	printf("\n---------------------------\n");
+	printf("操作を選択してください(数字を入力)\n");
+	while (true) {
+		printf(">");
+		scanf_s("%d", &menuNum);
+		scanf_s("%*[^\n]%*c");
+
+		if (menuNum < 1 || menuNum > 8)printf("そんな操作はないよ\n");
+		else break;
 	}
-	//タスク追加＋メンバー項目すべて表示（担当者が１名以上＆タスクが０個）
-	else if (displayMenuType == MenuType::TaskAddOnly) {
-		printf("%d.タスクの追加\n", MenuNum::AddTask_);
-		printf("%d.担当者追加\n", MenuNum::AddMember);
-		printf("%d.担当者削除\n", MenuNum::DeleteMember);
-		printf("%d.担当者表示\n", MenuNum::DisplayMember);
-		printf("%d.終了\n", MenuNum::MenuNumEnd_);
 
-		printf("\n---------------------------\n");
-		printf("操作を選択してください(数字を入力)\n");
-		while (true) {
-			printf(">");
-			scanf_s("%d", &menuNum);
-			scanf_s("%*[^\n]%*c");
-
-			if (menuNum != MenuNum::AddTask_ &&
-				menuNum != MenuNum::AddMember &&
-				menuNum != MenuNum::DeleteMember && 
-				menuNum != MenuNum::DisplayMember &&
-				menuNum != MenuNum::MenuNumEnd_) {
-				//表示されているメニュー以外を選択したら
-				printf("そんな操作はないよ\n");
-			}
-			else break;
-		}
-	}
-	//すべて表示
-	else if (displayMenuType == MenuType::All) {
-		printf("%d.タスクの追加\n", MenuNum::AddTask_);
-		printf("%d.タスクの削除\n", MenuNum::DeleteTask_);
-		printf("%d.タスクの表示\n", MenuNum::DisplayTask_);
-		printf("%d.タスクの更新\n", MenuNum::UpdateTask);
-		printf("%d.担当者追加\n", MenuNum::AddMember);
-		printf("%d.担当者削除\n", MenuNum::DeleteMember);
-		printf("%d.担当者表示\n", MenuNum::DisplayMember);
-		printf("%d.終了\n", MenuNum::MenuNumEnd_);
-
-		printf("\n---------------------------\n");
-		printf("操作を選択してください(数字を入力)\n");
-		while (true) {
-			printf(">");
-			scanf_s("%d", &menuNum);
-			scanf_s("%*[^\n]%*c");
-
-			if (menuNum < 1 || menuNum > 8)printf("そんな操作はないよ\n");
-			else break;
-		}
-	}
-	
-	
-
-	
-
-	
 	//メニューを代入
 	menuNum_ = menuNum;
 }
@@ -140,39 +81,41 @@ void TaskManager::AddTask()
 	newTask_->Init();
 
 	while (true) {
-		if (member_.size() != 0) {
-			printf("\n---------------------------\n");
-			printf("タスクidを入力してください\n");
-			int id_;
-			printf(">");
-			scanf_s("%d", &id_);
-			scanf_s("%*[^\n]%*c");
+		printf("\n---------------------------\n");
+		printf("タスクidを入力してください\n");
+		int id_;
+		printf(">");
+		scanf_s("%d", &id_);
+		scanf_s("%*[^\n]%*c");
 
-			newTask_->id = id_;
-		}
-		else {
-			printf("担当者がいません\n");
-			break;
-		}
+		newTask_->id = id_;
 
 		DisplayMember();
 		while (true) {
-			printf("担当者IDを入力してください\n");
+			//担当者が一人以上いる場合
+			if (member_.size() != 0) {
+				printf("担当者IDを入力してください\n");
 
-			int member;
-			printf(">");
-			scanf_s("%d", &member);
-			scanf_s("%*[^\n]%*c");
-
-			auto itr = member_.find(member);        // IDが設定されているか探す
-			if (itr != member_.end()) {
-				//設定されている場合の処理
-				newTask_->manager = member_.at(member);
-				break;
+				int member;
+				printf(">");
+				scanf_s("%d", &member);
+				scanf_s("%*[^\n]%*c");
+				auto itr = member_.find(member);        // IDが設定されているか探す
+				if (itr != member_.end()) {
+					//設定されている場合の処理
+					newTask_->manager = member_.at(member);
+					break;
+				}
+				else {
+					//設定されていない場合の処理
+					printf("担当者IDが一致しませんでした\n");
+				}
 			}
+			//担当者がいない場合
 			else {
-				//設定されていない場合の処理
-				printf("担当者IDが一致しませんでした\n");
+				printf("担当者が存在しないので、'担当者無し'で登録します\n");
+				newTask_->manager.Init();
+				break;
 			}
 		}
 
@@ -304,12 +247,12 @@ void TaskManager::UpdateTask()
 					TaskItem itemNum;	//項目
 					while (true) {
 						printf("更新する内容を選択してください(数字を入力)\n");
-						printf("%d.担当者\n"		,TaskItem::Manager_);
-						printf("%d.タイトル\n"		,TaskItem::Title_);
-						printf("%d.内容\n"		,TaskItem::Content_);
-						printf("%d.優先度\n"		,TaskItem::Priority_);
-						printf("%d.期限\n"		,TaskItem::Time_);
-						printf("%d.ステータス\n"	,TaskItem::Status_);
+						printf("%d.担当者\n", TaskItem::Manager_);
+						printf("%d.タイトル\n", TaskItem::Title_);
+						printf("%d.内容\n", TaskItem::Content_);
+						printf("%d.優先度\n", TaskItem::Priority_);
+						printf("%d.期限\n", TaskItem::Time_);
+						printf("%d.ステータス\n", TaskItem::Status_);
 						printf(">");
 						scanf_s("%d", &itemNum);
 						scanf_s("%*[^\n]%*c");
@@ -458,7 +401,7 @@ void TaskManager::AddMember()
 
 		break;
 	}
-	
+
 
 	member_.insert(std::make_pair(manager->id, *manager));
 

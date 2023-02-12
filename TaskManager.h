@@ -15,12 +15,6 @@ enum MenuNum {
 	MenuNumEnd_		//これ以下に入力しないように
 };
 
-enum MenuType {
-	MemberAddOnly,		//担当者追加のみ表示（担当者が０名の時）
-	TaskAddOnly,		//タスク追加＋メンバー項目すべて表示（担当者が１名以上＆タスクが０個）
-	All,				//すべて表示
-};
-
 class TaskManager
 {
 public:

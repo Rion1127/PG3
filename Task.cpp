@@ -37,7 +37,7 @@ void Manager::Draw()
 
 void Manager::Init()
 {
-	id = 0;
-	strcpy_s(managerName,20,"A");
-	strcpy_s(className,10,"LE2A");
+	id = 999;
+	strcpy_s(managerName,20,"’S“–ŽÒ–³‚µ");
+	strcpy_s(className,10,"No_Data");
 }
